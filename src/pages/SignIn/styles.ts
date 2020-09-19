@@ -26,24 +26,7 @@ export const Content = styled.div`
 
     h1 {
       margin-bottom: 24px;
-    }
-
-    input {
-      background: #232129;
-      border-radius: 10px;
-      border: 2px solid #232129;
-      padding: 16px;
-      width: 100%;
-      color: #F4EDE8;
-
-      & + input {
-        margin-top: 8px;
-      }
-
-      &::placeholder {
-        color: #666360;
-        }
-      }
+     }
     }
 
     button {
@@ -74,7 +57,6 @@ export const Content = styled.div`
         color: ${shade(0.2, '#F4EDE8')};
       }
     }
-  }
 
   > a {
       color: #FF9000;
