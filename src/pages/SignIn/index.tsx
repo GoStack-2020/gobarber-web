@@ -25,7 +25,7 @@ const SignIn: React.FC = () => (
         Criar conta
         </a>
     </Content>
-    <Background></Background>
+    <Background />
   </Container>
 );
 

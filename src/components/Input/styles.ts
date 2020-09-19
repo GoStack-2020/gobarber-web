@@ -6,7 +6,7 @@ export const Container = styled.div`
   border: 2px solid #232129;
   padding: 16px;
   width: 100%;
-  color: #F4EDE8;
+  color: #666360;
 
   display: flex;
   align-items: center;
@@ -19,6 +19,8 @@ export const Container = styled.div`
     flex: 1;
     border:0;
     background: transparent;
+    color: #F4EDE8;
+
     &::placeholder {
       color: #666360;
     }
