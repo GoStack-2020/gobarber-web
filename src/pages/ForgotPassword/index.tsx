@@ -1,4 +1,4 @@
-import React, { useRef, useCallback } from 'react';
+import React, { useRef, useCallback, useState } from 'react';
 import { Container, Content, Background, AnimationContainer } from './styles';
 import logo from '../../assets/logo.svg';
 import { FiLogIn, FiMail } from 'react-icons/fi';
@@ -10,19 +10,24 @@ import * as Yup from 'yup';
 import getValidationErrors from '../../utils/getValidationErros';
 import { useToast } from '../../hooks/toast';
 import { Link } from 'react-router-dom';
+import api from '../../services/api';
 
 interface ForgotPasswordFormData {
   email: string;
 }
 
 const ForgotPassword: React.FC = () => {
+  const [loading, setLoading] = useState(false);
   const formRef = useRef<FormHandles>(null);
 
   const { addToast } = useToast();
 
   const handleSubmit = useCallback(async (data: ForgotPasswordFormData) => {
     try {
+      setLoading(true);
+
       formRef.current?.setErrors({});
+
       const schema = Yup.object().shape({
         email: Yup.string().required('E-mail obrigatório').email('Digite um e-mail válido'),
       });
@@ -32,8 +37,15 @@ const ForgotPassword: React.FC = () => {
       });
 
       // password recover
+      api.post('/password/forgot', {
+        email: data.email,
+      });
 
-      // history.push('/dashboard');
+      addToast({
+        type: 'sucess',
+        title: 'Email de recuperação enviado',
+        description: 'Enviamos um email para confirmar a recuperação de senha, cheque sua caixa de entrada',
+      });
 
     } catch (err) {
       if (err instanceof Yup.ValidationError) {
@@ -49,6 +61,8 @@ const ForgotPassword: React.FC = () => {
         description: 'Ocorreu um erro ao tentar recuperar sua senha, tente novamente',
       });
 
+    } finally {
+      setLoading(false);
     }
   }, [addToast]);
   return (
@@ -61,7 +75,7 @@ const ForgotPassword: React.FC = () => {
 
             <Input name="email" icon={FiMail} placeholder="E-mail" />
 
-            <Button type="submit">Recuperar</Button>
+            <Button loading={loading} type="submit">Recuperar</Button>
 
           </Form>
 
