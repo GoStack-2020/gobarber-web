@@ -9,7 +9,8 @@ import { FormHandles } from '@unform/core';
 import * as Yup from 'yup';
 import getValidationErrors from '../../utils/getValidationErros';
 import { useToast } from '../../hooks/toast';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
+import api from '../../services/api';
 
 interface ResetPasswordFormData {
   password: string;
@@ -21,6 +22,7 @@ const ResetPassword: React.FC = () => {
 
   const { addToast } = useToast();
   const history = useHistory();
+  const location = useLocation();
 
   const handleSubmit = useCallback(async (data: ResetPasswordFormData) => {
     try {
@@ -37,7 +39,19 @@ const ResetPassword: React.FC = () => {
         abortEarly: false,
       });
 
-      history.push('/signin');
+      const token = location.search.replace('?token=', '');
+
+      if (!token) {
+        throw new Error();
+      }
+
+      await api.post('/password/reset', {
+        password: data.password,
+        password_confirmation: data.password_confirmation,
+        token,
+      });
+
+      history.push('/');
 
     } catch (err) {
       if (err instanceof Yup.ValidationError) {
@@ -54,7 +68,7 @@ const ResetPassword: React.FC = () => {
       });
 
     }
-  }, [addToast, history]);
+  }, [addToast, history, location.search]);
   return (
     <Container>
       <Content>
