@@ -1,4 +1,5 @@
 import { fireEvent, render, waitFor } from '@testing-library/react';
+import 'jest-styled-components';
 import React from 'react';
 import Input from '../../components/Input';
 
@@ -35,8 +36,8 @@ describe('Input component', () => {
     fireEvent.focus(inputElement);
 
     await waitFor(() => {
-      expect(containerElement).toHaveStyle('border-color: #ff9000;');
-      // expect(containerElement).toHaveStyle('color: #ff9000');
+      expect(containerElement).toHaveStyleRule('border-color: #ff9000;');
+      expect(containerElement).toHaveStyleRule('color: #ff9000');
     });
   })
 })
